@@ -166,10 +166,10 @@ export default function Home() {
 
           <aside className="hero-proof" aria-label="Informações da Green Wash">
             <div className="proof-score">
-              <span>4,9</span>
+              <span>08–18</span>
               <div>
-                <strong>★★★★★</strong>
-                <p>121 avaliações no Google</p>
+                <strong>SEG — SÁB</strong>
+                <p>Atendimento em Taubaté</p>
               </div>
             </div>
             <div className="proof-divider" />
@@ -454,9 +454,9 @@ export default function Home() {
               </a>
             </div>
             <div>
-              <span>Google</span>
-              <strong>4,9 / 5</strong>
-              <p>121 avaliações</p>
+              <span>Atuação</span>
+              <strong>Estética automotiva</strong>
+              <p>Higienização em geral</p>
             </div>
           </div>
         </section>
