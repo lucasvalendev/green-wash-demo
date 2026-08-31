@@ -1,33 +1,482 @@
 'use client'
-import { useState } from 'react'
-import Image from 'next/image'
-const WA = '5512992028120'
-type Step = 1 | 2 | 3 | 4 | 5
-type Quote = { service: string; category: string; model: string; situation: string; timing: string }
-const services = ['HigienizaÃ§Ã£o interna', 'Lavagem detalhada', 'Polimento & cristalizaÃ§Ã£o', 'ProteÃ§Ã£o cerÃ¢mica', 'FarÃ³is', 'Ar-condicionado']
-const situations = ['Manchas / sujeira', 'ManutenÃ§Ã£o periÃ³dica', 'Odor', 'Pelos de animais', 'Sujeira intensa']
-const timings = ['Hoje / assim que possÃ­vel', 'Esta semana', 'Nos prÃ³ximos dias', 'SÃ³ estou pesquisando']
-function Arrow() { return <span aria-hidden="true">â†—</span> }
-export default function Home() {
-  const [step, setStep] = useState<Step>(1); const [quote, setQuote] = useState<Quote>({ service: '', category: '', model: '', situation: '', timing: '' }); const [menu, setMenu] = useState(false)
-  const startQuote = () => { document.getElementById('orcamento')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); setStep(1) }
-  const choose = (key: keyof Quote, value: string, next?: Step) => { setQuote((q) => ({ ...q, [key]: value })); if (next) setStep(next) }
-  const message = `OlÃ¡! Vim pelo orÃ§amento online da Green Wash.\n\nServiÃ§o: ${quote.service}\nVeÃ­culo: ${quote.model || 'A confirmar'}\nCategoria: ${quote.category}\nSituaÃ§Ã£o: ${quote.situation}\nQuando pretendo fazer: ${quote.timing}\n\nGostaria de saber valor e disponibilidade.`
-  const whatsapp = `https://wa.me/${WA}?text=${encodeURIComponent(message)}`
-  return <main><a className="skip" href="#conteudo">Pular para o conteÃºdo</a>
-    <header className="site-header"><a className="brand" href="#top" aria-label="Green Wash, inÃ­cio"><Image src="/projects/green-wash/brand/green-wash-logo.png" alt="Green Wash" width={270} height={96} /></a><nav className={menu ? 'nav open' : 'nav'} aria-label="NavegaÃ§Ã£o principal"><a href="#servicos" onClick={() => setMenu(false)}>ServiÃ§os</a><a href="#diferenciais" onClick={() => setMenu(false)}>Por que Green Wash</a><a href="#orcamento" onClick={() => setMenu(false)}>OrÃ§amento</a><a href="#localizacao" onClick={() => setMenu(false)}>LocalizaÃ§Ã£o</a></nav><button className="header-cta" onClick={startQuote}>Pedir orÃ§amento <Arrow /></button><button className="menu-button" aria-label={menu ? 'Fechar menu' : 'Abrir menu'} aria-expanded={menu} onClick={() => setMenu(!menu)}>{menu ? 'Ã—' : 'Menu'}</button></header>
-    <div id="conteudo"><section className="hero" id="top"><div className="hero-copy"><p className="eyebrow"><i /> EstÃ©tica automotiva Â· TaubatÃ©/SP</p><h1>Cuidado que<br /><em>aparece</em> nos detalhes.</h1><p className="hero-text">HigienizaÃ§Ã£o, proteÃ§Ã£o e acabamento para o carro voltar a parecer cuidado.</p><div className="hero-actions"><button className="button button-green" onClick={startQuote}>Montar meu orÃ§amento <Arrow /></button><a className="text-link" href="#servicos">Ver serviÃ§os <span>â†“</span></a></div></div><div className="hero-media"><Image src="/images/green-wash-team.png" alt="Equipe Green Wash realizando higienizaÃ§Ã£o automotiva" width={1200} height={1500} priority sizes="(max-width: 760px) 100vw, 45vw" /><div className="hero-caption"><span>Green Wash</span><span>12+ anos no ramo</span></div></div><div className="hero-meta"><span>01 â€” 02</span><span>TaubatÃ© Â· SP</span></div></section>
-      <section className="intro section-pad"><div className="section-kicker">01 / O cuidado certo</div><div className="intro-grid"><h2>Um carro bem cuidado<br /><span>muda o dia.</span></h2><p>Do interior Ã  pintura, cada serviÃ§o Ã© feito com tÃ©cnica e produtos biodegradÃ¡veis. Comece seu orÃ§amento em poucos passos â€” sem formulÃ¡rio, sem perguntas repetidas.</p></div></section>
-      <section className="services section-pad" id="servicos"><div className="section-kicker">02 / ServiÃ§os</div><div className="section-heading"><h2>Para cada detalhe,<br /><span>um jeito de cuidar.</span></h2><p>Escolha o que seu carro precisa. A Green Wash entende o restante.</p></div><div className="service-list">{['Lavagem detalhada','HigienizaÃ§Ã£o interna','Polimento & cristalizaÃ§Ã£o','ProteÃ§Ã£o cerÃ¢mica','Ar-condicionado','FarÃ³is'].map((s, i) => <div className="service-row" key={s}><span className="service-no">0{i + 1}</span><h3>{s}</h3><span className="service-arrow">â†—</span></div>)}</div></section>
-      <section className="quote-section" id="orcamento"><div className="quote-intro"><div className="section-kicker">03 / OrÃ§amento guiado</div><h2>Chegue ao orÃ§amento<br /><em>sem comeÃ§ar do zero.</em></h2><p>Conte rapidamente o que seu carro precisa. A mensagem chega pronta no WhatsApp da Green Wash.</p><div className="quote-note"><span className="green-dot" /> Leva menos de 30 segundos</div></div><div className="wizard" aria-live="polite"><div className="wizard-top"><span>ORÃ‡AMENTO RÃPIDO</span><span>{step < 5 ? `0${step} / 04` : 'RESUMO'}</span></div>{step < 5 && <div className="progress"><span style={{ width: `${step * 25}%` }} /></div>}
-        {step === 1 && <div className="wizard-step"><p className="step-label">PASSO 01</p><h3>O que seu carro precisa?</h3><div className="choice-grid">{services.map((s) => <button className="choice" key={s} onClick={() => choose('service', s, 2)}>{s}<span>â†—</span></button>)}</div></div>}
-        {step === 2 && <div className="wizard-step"><button className="back" onClick={() => setStep(1)}>â† Voltar</button><p className="step-label">PASSO 02</p><h3>Qual Ã© o seu veÃ­culo?</h3><div className="choice-grid compact">{['Hatch','Sedan','SUV','Picape','Outro'].map((s) => <button className={quote.category === s ? 'choice selected' : 'choice'} key={s} onClick={() => choose('category', s)}>{s}<span>{quote.category === s ? 'âœ“' : 'â†—'}</span></button>)}</div>{quote.category && <div className="model-area"><label htmlFor="model">Marca e modelo <small>opcional</small></label><input id="model" value={quote.model} onChange={(e) => setQuote({ ...quote, model: e.target.value })} placeholder="Ex.: Honda Civic" /><button className="quick-choice" onClick={() => { setQuote({ ...quote, model: 'Honda Civic' }); setStep(3) }}>Honda Civic <span>â†—</span></button></div>}</div>}
-        {step === 3 && <div className="wizard-step"><button className="back" onClick={() => setStep(2)}>â† Voltar</button><p className="step-label">PASSO 03</p><h3>Como estÃ¡ o interior?</h3><div className="choice-grid">{situations.map((s) => <button className="choice" key={s} onClick={() => choose('situation', s, 4)}>{s}<span>â†—</span></button>)}</div></div>}
-        {step === 4 && <div className="wizard-step"><button className="back" onClick={() => setStep(3)}>â† Voltar</button><p className="step-label">PASSO 04</p><h3>Quando pretende fazer?</h3><div className="choice-grid">{timings.map((s) => <button className="choice" key={s} onClick={() => choose('timing', s, 5)}>{s}<span>â†—</span></button>)}</div></div>}
-        {step === 5 && <div className="wizard-step summary"><button className="back" onClick={() => setStep(4)}>â† Voltar</button><p className="step-label">SEU RESUMO</p><h3>Pronto para conversar.</h3><div className="summary-list"><div><span>ServiÃ§o</span><strong>{quote.service}</strong></div><div><span>VeÃ­culo</span><strong>{quote.model || 'A confirmar'} <small>Â· {quote.category}</small></strong></div><div><span>SituaÃ§Ã£o</span><strong>{quote.situation}</strong></div><div><span>Quando</span><strong>{quote.timing}</strong></div></div><a className="button button-green whatsapp" href={whatsapp} target="_blank" rel="noopener noreferrer">Continuar no WhatsApp <Arrow /></a><p className="privacy">VocÃª fala direto com a Green Wash. Sem cadastro.</p></div>}
-      </div></section>
-      <section className="trust section-pad" id="diferenciais"><div className="section-kicker">04 / Por que Green Wash</div><div className="trust-grid"><div><p className="big-number">12<span>+</span></p><p className="big-label">anos no ramo</p></div><div className="trust-copy"><h2>TÃ©cnica para cuidar.<br /><span>Tempo para confiar.</span></h2><div className="trust-lines"><p><b>01</b> Produtos biodegradÃ¡veis</p><p><b>02</b> Equipe especializada</p><p><b>03</b> Atendimento de segunda a sÃ¡bado</p></div></div></div></section>
-      <section className="location section-pad" id="localizacao"><div><div className="section-kicker">05 / Onde estamos</div><h2>Seu carro, em boas mÃ£os<br /><span>em TaubatÃ©.</span></h2><p>Rua Luiz Vaz de CamÃµes, 305<br />Jardim Ana Rosa Â· TaubatÃ©/SP</p><a className="text-link" href="https://www.google.com/maps/search/?api=1&query=Green+Wash+Est%C3%A9tica+Automotiva+Taubat%C3%A9" target="_blank" rel="noopener noreferrer">Abrir no Maps â†—</a></div><div className="hours"><p>HORÃRIOS</p><div><span>Segunda a sÃ¡bado</span><strong>08:00 â€” 18:00</strong></div><div><span>Domingo</span><strong>Fechado</strong></div></div></section></div><footer><div className="brand-word">GREEN<br /><span>WASH</span></div><p>EstÃ©tica automotiva<br />TaubatÃ© Â· SP</p><a href={`https://wa.me/${WA}`} target="_blank" rel="noopener noreferrer">WhatsApp â†—</a><small>Â© Green Wash 2026</small></footer>
-  </main>
+
+import { useMemo, useState } from 'react'
+
+const WHATSAPP_NUMBER = '5512992028120'
+const MAPS_URL =
+  'https://www.google.com/maps/search/?api=1&query=Green+Wash+Est%C3%A9tica+Automotiva+%26+Higieniza%C3%A7%C3%A3o+em+Geral+Taubat%C3%A9'
+
+type Step = 1 | 2 | 3 | 4
+
+type Quote = {
+  service: string
+  vehicleType: string
+  model: string
+  situation: string
+  timing: string
+  notes: string
 }
 
+const services = [
+  {
+    title: 'Higienização de bancos e interior',
+    description: 'Bancos, teto, carpetes e outras superfícies internas.',
+  },
+  {
+    title: 'Lavagem e enceramento',
+    description: 'Cuidado de limpeza e acabamento para o dia a dia.',
+  },
+  {
+    title: 'Polimento e faróis',
+    description: 'Polimento automotivo e recuperação do acabamento dos faróis.',
+  },
+  {
+    title: 'Limpeza de motor',
+    description: 'Limpeza dedicada para a área do motor.',
+  },
+  {
+    title: 'Estofados e carpetes',
+    description: 'Higienização de sofás, cadeiras, tapetes e carpetes.',
+  },
+  {
+    title: 'Lavagem e enceramento de motos',
+    description: 'Cuidado também para motos, com lavagem e acabamento.',
+  },
+]
+
+const vehicleTypes = ['Hatch', 'Sedan', 'SUV', 'Picape', 'Moto', 'Outro']
+const situations = [
+  'Manchas / sujeira pesada',
+  'Odor',
+  'Pelos de animais',
+  'Manutenção',
+  'Quero recuperar o brilho',
+  'Outro',
+]
+const timings = ['Hoje / assim que possível', 'Esta semana', 'Nos próximos dias', 'Só quero consultar']
+
+function Arrow({ direction = 'right' }: { direction?: 'right' | 'down' | 'left' }) {
+  const glyph = direction === 'down' ? '↓' : direction === 'left' ? '←' : '↗'
+  return <span aria-hidden="true">{glyph}</span>
+}
+
+function scrollToQuote() {
+  document.getElementById('orcamento')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+}
+
+export default function Home() {
+  const [step, setStep] = useState<Step>(1)
+  const [menuOpen, setMenuOpen] = useState(false)
+  const [quote, setQuote] = useState<Quote>({
+    service: '',
+    vehicleType: '',
+    model: '',
+    situation: '',
+    timing: '',
+    notes: '',
+  })
+
+  const message = useMemo(() => {
+    const lines = [
+      'Olá! Vim pela página da Green Wash e gostaria de pedir um orçamento.',
+      '',
+      'Serviço: ' + (quote.service || 'A definir'),
+      'Veículo: ' + ([quote.vehicleType, quote.model].filter(Boolean).join(' — ') || 'A definir'),
+      'Situação: ' + (quote.situation || 'Não informado'),
+      'Quando pretende fazer: ' + (quote.timing || 'A combinar'),
+    ]
+
+    if (quote.notes.trim()) lines.push('Observação: ' + quote.notes.trim())
+    lines.push('', 'Pode me passar valor e disponibilidade?')
+    return lines.join('\n')
+  }, [quote])
+
+  const whatsappUrl = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(message)
+
+  const chooseService = (service: string) => {
+    setQuote((current) => ({ ...current, service }))
+    setStep(2)
+  }
+
+  const chooseTiming = (timing: string) => {
+    setQuote((current) => ({ ...current, timing }))
+  }
+
+  return (
+    <main>
+      <a className="skip-link" href="#conteudo">
+        Pular para o conteúdo
+      </a>
+
+      <header className="site-header">
+        <a className="wordmark" href="#top" aria-label="Green Wash — início">
+          <span>GREEN</span>
+          <strong>WASH</strong>
+        </a>
+
+        <nav id="mobile-navigation" className={menuOpen ? 'site-nav open' : 'site-nav'} aria-label="Navegação principal">
+          <a href="#servicos" onClick={() => setMenuOpen(false)}>
+            Serviços
+          </a>
+          <a href="#como-funciona" onClick={() => setMenuOpen(false)}>
+            Como funciona
+          </a>
+          <a href="#localizacao" onClick={() => setMenuOpen(false)}>
+            Localização
+          </a>
+        </nav>
+
+        <button className="header-cta" onClick={scrollToQuote}>
+          Pedir orçamento <Arrow />
+        </button>
+        <button
+          className="menu-toggle"
+          aria-expanded={menuOpen}
+          aria-controls="mobile-navigation"
+          aria-label={menuOpen ? 'Fechar menu' : 'Abrir menu'}
+          onClick={() => setMenuOpen((open) => !open)}
+        >
+          {menuOpen ? 'Fechar' : 'Menu'}
+        </button>
+      </header>
+
+      <div id="conteudo">
+        <section className="hero" id="top">
+          <div className="hero-main">
+            <p className="eyebrow">
+              <span className="status-dot" /> Estética automotiva em Taubaté
+            </p>
+            <h1>
+              Seu carro bem cuidado.
+              <span>Sem enrolação para pedir orçamento.</span>
+            </h1>
+            <p className="hero-copy">
+              Higienização, polimento e cuidados automotivos no Jardim Ana Rosa. Escolha o serviço,
+              informe seu veículo e fale direto com a Green Wash pelo WhatsApp.
+            </p>
+            <div className="hero-actions">
+              <button className="button button-accent" onClick={scrollToQuote}>
+                Montar meu orçamento <Arrow />
+              </button>
+              <a className="text-link" href="#servicos">
+                Ver serviços <Arrow direction="down" />
+              </a>
+            </div>
+          </div>
+
+          <aside className="hero-proof" aria-label="Informações da Green Wash">
+            <div className="proof-score">
+              <span>4,9</span>
+              <div>
+                <strong>★★★★★</strong>
+                <p>121 avaliações no Google</p>
+              </div>
+            </div>
+            <div className="proof-divider" />
+            <div className="proof-detail">
+              <span>Atendimento</span>
+              <strong>Segunda a sábado</strong>
+              <p>08:00 — 18:00</p>
+            </div>
+            <div className="proof-detail">
+              <span>Endereço</span>
+              <strong>Jardim Ana Rosa</strong>
+              <p>Rua Luiz Vaz de Camões, 305</p>
+            </div>
+            <a className="proof-link" href={MAPS_URL} target="_blank" rel="noreferrer">
+              Ver no Google Maps <Arrow />
+            </a>
+          </aside>
+        </section>
+
+        <section className="services section" id="servicos">
+          <div className="section-heading">
+            <p className="section-label">Serviços</p>
+            <h2>Do interior ao acabamento.</h2>
+            <p>
+              A Green Wash trabalha com cuidados automotivos e higienização em geral. Aqui estão os
+              serviços que o cliente já pode selecionar antes de chamar no WhatsApp.
+            </p>
+          </div>
+
+          <div className="service-grid">
+            {services.map((service, index) => (
+              <button
+                className="service-card"
+                key={service.title}
+                onClick={() => {
+                  setQuote((current) => ({ ...current, service: service.title }))
+                  setStep(2)
+                  scrollToQuote()
+                }}
+              >
+                <span className="service-number">0{index + 1}</span>
+                <div>
+                  <h3>{service.title}</h3>
+                  <p>{service.description}</p>
+                </div>
+                <Arrow />
+              </button>
+            ))}
+          </div>
+        </section>
+
+        <section className="process section" id="como-funciona">
+          <div className="process-copy">
+            <p className="section-label">Orçamento direto</p>
+            <h2>Você explica uma vez. A conversa já começa com contexto.</h2>
+            <p>
+              Em vez de mandar apenas “quanto custa?”, você informa o serviço, o veículo e quando
+              pretende fazer. A Green Wash recebe tudo organizado no WhatsApp.
+            </p>
+          </div>
+
+          <div className="process-steps" aria-label="Etapas do orçamento">
+            <div>
+              <span>01</span>
+              <strong>Escolha o serviço</strong>
+              <p>Selecione o cuidado que você procura.</p>
+            </div>
+            <div>
+              <span>02</span>
+              <strong>Informe o veículo</strong>
+              <p>Tipo, marca e modelo ajudam a contextualizar o orçamento.</p>
+            </div>
+            <div>
+              <span>03</span>
+              <strong>Continue no WhatsApp</strong>
+              <p>A mensagem chega pronta para combinar valor e disponibilidade.</p>
+            </div>
+          </div>
+        </section>
+
+        <section className="quote-section section" id="orcamento">
+          <div className="quote-intro">
+            <p className="section-label">Orçamento rápido</p>
+            <h2>Menos troca de mensagem. Mais contexto desde o primeiro contato.</h2>
+            <p>
+              Leva menos de um minuto e não exige cadastro. No fim, você fala direto com a Green
+              Wash pelo WhatsApp.
+            </p>
+            <div className="quote-meta">
+              <span className="status-dot" /> Sem cadastro · sem formulário enviado para terceiros
+            </div>
+          </div>
+
+          <div className="wizard" aria-live="polite">
+            <div className="wizard-topline">
+              <span>ORÇAMENTO GREEN WASH</span>
+              <span>{step === 4 ? 'RESUMO' : '0' + step + ' / 03'}</span>
+            </div>
+            {step < 4 && (
+              <div className="progress" aria-hidden="true">
+                <span style={{ width: String((step / 3) * 100) + '%' }} />
+              </div>
+            )}
+
+            {step === 1 && (
+              <div className="wizard-step">
+                <p className="step-label">PASSO 01</p>
+                <h3>O que você precisa?</h3>
+                <div className="choice-grid">
+                  {[...services.map((service) => service.title), 'Outro / não sei ainda'].map((service) => (
+                    <button className="choice" key={service} onClick={() => chooseService(service)}>
+                      <span>{service}</span>
+                      <Arrow />
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {step === 2 && (
+              <div className="wizard-step">
+                <button className="back-button" onClick={() => setStep(1)}>
+                  <Arrow direction="left" /> Voltar
+                </button>
+                <p className="step-label">PASSO 02</p>
+                <h3>Qual é o seu veículo?</h3>
+                <div className="choice-grid compact">
+                  {vehicleTypes.map((type) => (
+                    <button
+                      className={quote.vehicleType === type ? 'choice selected' : 'choice'}
+                      key={type}
+                      onClick={() => setQuote((current) => ({ ...current, vehicleType: type }))}
+                    >
+                      <span>{type}</span>
+                      <span aria-hidden="true">{quote.vehicleType === type ? '✓' : '↗'}</span>
+                    </button>
+                  ))}
+                </div>
+                <label className="field-label" htmlFor="model">
+                  Marca e modelo <span>opcional</span>
+                </label>
+                <input
+                  className="text-input"
+                  id="model"
+                  value={quote.model}
+                  onChange={(event) =>
+                    setQuote((current) => ({ ...current, model: event.target.value }))
+                  }
+                  placeholder="Ex.: Honda Civic"
+                />
+                <button
+                  className="button button-accent wizard-next"
+                  disabled={!quote.vehicleType}
+                  onClick={() => setStep(3)}
+                >
+                  Continuar <Arrow />
+                </button>
+              </div>
+            )}
+
+            {step === 3 && (
+              <div className="wizard-step">
+                <button className="back-button" onClick={() => setStep(2)}>
+                  <Arrow direction="left" /> Voltar
+                </button>
+                <p className="step-label">PASSO 03</p>
+                <h3>Como podemos contextualizar melhor?</h3>
+
+                <div className="field-block">
+                  <span className="field-label">Situação <span>opcional</span></span>
+                  <div className="tag-grid">
+                    {situations.map((situation) => (
+                      <button
+                        className={quote.situation === situation ? 'tag selected' : 'tag'}
+                        key={situation}
+                        onClick={() => setQuote((current) => ({ ...current, situation }))}
+                      >
+                        {situation}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="field-block">
+                  <span className="field-label">Quando pretende fazer?</span>
+                  <div className="choice-grid compact timing-grid">
+                    {timings.map((timing) => (
+                      <button
+                        className={quote.timing === timing ? 'choice selected' : 'choice'}
+                        key={timing}
+                        onClick={() => chooseTiming(timing)}
+                      >
+                        <span>{timing}</span>
+                        <span aria-hidden="true">{quote.timing === timing ? '✓' : '↗'}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <label className="field-label" htmlFor="notes">
+                  Observação <span>opcional</span>
+                </label>
+                <textarea
+                  className="text-input textarea"
+                  id="notes"
+                  value={quote.notes}
+                  onChange={(event) =>
+                    setQuote((current) => ({ ...current, notes: event.target.value }))
+                  }
+                  placeholder="Ex.: banco com mancha, farol amarelado, carro ficou muito tempo parado..."
+                />
+
+                <button
+                  className="button button-accent wizard-next"
+                  disabled={!quote.timing}
+                  onClick={() => setStep(4)}
+                >
+                  Ver resumo <Arrow />
+                </button>
+              </div>
+            )}
+
+            {step === 4 && (
+              <div className="wizard-step summary-step">
+                <button className="back-button" onClick={() => setStep(3)}>
+                  <Arrow direction="left" /> Voltar
+                </button>
+                <p className="step-label">SEU RESUMO</p>
+                <h3>Pronto. Agora é só enviar.</h3>
+                <dl className="summary-list">
+                  <div>
+                    <dt>Serviço</dt>
+                    <dd>{quote.service}</dd>
+                  </div>
+                  <div>
+                    <dt>Veículo</dt>
+                    <dd>{[quote.vehicleType, quote.model].filter(Boolean).join(' — ')}</dd>
+                  </div>
+                  <div>
+                    <dt>Situação</dt>
+                    <dd>{quote.situation || 'Não informado'}</dd>
+                  </div>
+                  <div>
+                    <dt>Quando</dt>
+                    <dd>{quote.timing}</dd>
+                  </div>
+                </dl>
+                <a className="button button-accent whatsapp-button" href={whatsappUrl} target="_blank" rel="noreferrer">
+                  Continuar no WhatsApp <Arrow />
+                </a>
+                <p className="wizard-note">A mensagem abre pronta no WhatsApp da Green Wash.</p>
+              </div>
+            )}
+          </div>
+        </section>
+
+        <section className="location section" id="localizacao">
+          <div>
+            <p className="section-label">Onde estamos</p>
+            <h2>Jardim Ana Rosa, Taubaté.</h2>
+            <p className="location-address">
+              Rua Luiz Vaz de Camões, 305
+              <br />
+              Taubaté — SP, 12071-050
+            </p>
+            <a className="button button-dark" href={MAPS_URL} target="_blank" rel="noreferrer">
+              Abrir no Google Maps <Arrow />
+            </a>
+          </div>
+
+          <div className="location-panel">
+            <div>
+              <span>Horário</span>
+              <strong>Segunda a sábado</strong>
+              <p>08:00 — 18:00</p>
+            </div>
+            <div>
+              <span>WhatsApp</span>
+              <strong>(12) 99202-8120</strong>
+              <a href="https://wa.me/5512992028120" target="_blank" rel="noreferrer">
+                Chamar agora <Arrow />
+              </a>
+            </div>
+            <div>
+              <span>Google</span>
+              <strong>4,9 / 5</strong>
+              <p>121 avaliações</p>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <footer>
+        <a className="wordmark footer-wordmark" href="#top" aria-label="Green Wash — voltar ao início">
+          <span>GREEN</span>
+          <strong>WASH</strong>
+        </a>
+        <p>Estética automotiva & higienização em geral · Taubaté/SP</p>
+        <a href="https://wa.me/5512992028120" target="_blank" rel="noreferrer">
+          WhatsApp <Arrow />
+        </a>
+        <small>© 2026 Green Wash</small>
+      </footer>
+
+      <button className="mobile-sticky-cta" onClick={scrollToQuote}>
+        Pedir orçamento <Arrow />
+      </button>
+    </main>
+  )
+}
