@@ -1,3 +1,5 @@
 # Green Wash Demo
 
-Commercial quote-builder demo for Green Wash Estética Automotiva in Taubaté/SP.
+Preview comercial da Green Wash Estética Automotiva & Higienização em Geral, em Taubaté/SP.
+
+A página prioriza três objetivos: explicar os serviços com clareza, apresentar prova pública do negócio e transformar o primeiro contato em um orçamento contextualizado no WhatsApp.
