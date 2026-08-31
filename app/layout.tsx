@@ -87,12 +87,6 @@ const localBusinessJsonLd = {
       closes: '18:00',
     },
   ],
-  aggregateRating: {
-    '@type': 'AggregateRating',
-    ratingValue: '4.9',
-    reviewCount: '121',
-    bestRating: '5',
-  },
   hasOfferCatalog: {
     '@type': 'OfferCatalog',
     name: 'Serviços Green Wash',
